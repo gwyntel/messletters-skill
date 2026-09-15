@@ -2,8 +2,8 @@
 name: messletters
 description: Convert text into 121+ Unicode fancy text styles — math alphabets, scripts, symbols, decorative, encircled, runic, and more. Extracted from messletters.com.
 version: 1.0.0
-author: GwynTel
-license: MIT
+author: gwyntel
+license: MutuaL-1.2
 metadata:
   hermes:
     tags: [unicode, fancy-text, text-transform, messletters, creative, typography]
