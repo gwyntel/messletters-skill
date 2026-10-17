@@ -68,4 +68,4 @@ Input: `Claire`
 
 ## License
 
-MIT © 2026 GwynTel
+MutuaL-1.2 © 2026 GwynTel
