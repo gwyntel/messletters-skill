@@ -7,9 +7,15 @@ Extracted from [messletters.com](https://www.messletters.com/en/).
 
 ## Install
 
+Install globally for Hermes Agent (or another supported agent):
+
 ```bash
-hermes skills install gwyntel/messletters/messletters
+npx skills add gwyntel/messletters-skill --skill messletters --agent hermes-agent -g -y
 ```
+
+For other supported agents, replace `hermes-agent` with the target agent name. Browse installers with `npx skills add gwyntel/messletters-skill --list`.
+
+Hermes-native installation is separate from the Vercel skills CLI; use the repository's `messletters/SKILL.md` content with Hermes' skill installation workflow if you do not use the Vercel CLI.
 
 ## Quick Start
 
@@ -30,6 +36,16 @@ convert("Love you 3000", "Math Fraktur Bold")
 search_styles("fraktur")
 # → ['Math Fraktur Bold', 'Math Fraktur Bold - Edit', 'Math Fraktur Normal', 'Math Fraktur Normal - Edit']
 ```
+
+## Update
+
+For a reliable update from this GitHub repository, install the latest version again:
+
+```bash
+npx skills add gwyntel/messletters-skill --skill messletters --agent hermes-agent -g -y
+```
+
+The Vercel CLI's `skills update` command updates sources recorded in its install registry; installs from a local repository path may not be tracked. If you installed from a local clone, rerun `npx skills add /path/to/messletters-skill --skill messletters --agent hermes-agent -g -y` after pulling the repository. For other agent paths, use the same installer with the appropriate `--agent` target.
 
 ## API
 
