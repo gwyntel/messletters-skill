@@ -17,7 +17,7 @@ The install is global for the selected agent. The CLI discovers the nested skill
 
 ## Use
 
-Once installed, ask your Hermes agent to convert text using a named style (for example, “convert Hello to Math Sans-serif Bold”) or import the bundled Python module as shown below. Python usage requires the skill's `scripts` directory on `sys.path`; see the installed skill location in Hermes if your setup differs.
+Once installed, ask your agent to convert text using a named style (for example, “convert Hello to Math Sans-serif Bold”) or import the bundled Python module as shown below. Python usage requires the skill's `scripts` directory on `sys.path`; locate it through your host agent's skill metadata/configuration (install locations vary by agent). No Hermes-specific tool is required; without Python/shell execution, an agent can still use the mapping instructions and provide the result directly.
 
 ## Update
 
