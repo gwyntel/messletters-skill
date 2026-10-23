@@ -25,9 +25,13 @@ Bundled at `scripts/messletters.py` within this skill. Locate the installed skil
 ```python
 from pathlib import Path
 import sys
-skill_dir = Path("/actual/installed/path/to/messletters")  # obtain from your agent's skill metadata/configuration
+
+# Hermes Agent global install default; change this for your host/install scope.
+skill_dir = Path.home() / ".hermes" / "skills" / "messletters"
 sys.path.insert(0, str(skill_dir / "scripts"))
 from messletters import convert, search_styles, list_styles, preview_styles, reverse_lookup, CATEGORIES, STYLES
+
+print(convert("Hello World", "Math Sans-serif Bold"))
 ```
 
 Agent tools differ. Use the host's Python/shell execution capability, or provide the style mapping/result directly when code execution is unavailable. This skill needs no Hermes-specific tool.
