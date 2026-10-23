@@ -19,7 +19,7 @@ The install is global for the selected agent. The CLI discovers the nested skill
 
 ## Use
 
-Once installed, ask your agent to convert text using a named style (for example, “convert Hello to Math Sans-serif Bold”) or import the bundled Python module as shown below. Python usage requires the skill's `scripts` directory on `sys.path`; locate it through your host agent's skill metadata/configuration (install locations vary by agent). No Hermes-specific tool is required; without Python/shell execution, an agent can still use the mapping instructions and provide the result directly.
+Once installed, ask your agent to convert text using a named style (for example, “convert Hello to Math Sans-serif Bold”) or import the bundled Python module as shown below. Python usage requires the skill's `scripts` directory on `sys.path`; locate it through your host agent's skill metadata/configuration (for a global Hermes install, this is typically `~/.hermes/skills/messletters/scripts`; other agents' locations vary). No Hermes-specific tool is required; without Python/shell execution, an agent can still use the mapping instructions and provide the result directly.
 
 ## Update
 
@@ -38,12 +38,6 @@ For CLI options, see [Vercel skills](https://github.com/vercel-labs/skills).
 **Hermes-native installer (alternative):** `hermes skills install gwyntel/messletters/messletters`. This is separate from the Vercel CLI and may use a different install location.
 
 ---
-
-## Quick Start
-
-```bash
-npx skills add gwyntel/messletters-skill --skill messletters --agent hermes-agent -g -y
-```
 
 ## Quick Start: Python
 
