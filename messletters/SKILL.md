@@ -18,7 +18,7 @@ Zero dependencies. Single Python file. Works anywhere.
 
 ## Module
 
-Bundled at `scripts/messletters.py` within this skill. Locate the installed skill directory using the host's skill metadata or filesystem; do not assume a vendor-specific home directory. For standalone Python, resolve the installed skill directory from your host agent's skill metadata/configuration, then add its `scripts` subdirectory to `sys.path` as shown below.
+Bundled at `scripts/messletters.py` within this skill. The example below runs with the default global Hermes Agent installation. If installed elsewhere or on another host, replace that path with the actual skill directory reported by your agent's skill metadata/configuration; keep `scripts` as the final component. No host path is assumed outside the explicitly labeled Hermes example.
 
 ## Import
 
