@@ -7,6 +7,8 @@ Extracted from [messletters.com](https://www.messletters.com/en/).
 
 ## Install
 
+Prerequisite: Node.js 22.20 or later.
+
 This repository keeps the skill in `messletters/SKILL.md`; select that skill by name when installing with the Vercel `skills` CLI:
 
 ```bash
