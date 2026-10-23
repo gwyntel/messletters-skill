@@ -7,11 +7,39 @@ Extracted from [messletters.com](https://www.messletters.com/en/).
 
 ## Install
 
+Prerequisite: Node.js 22.20 or later.
+
+This repository keeps the skill in `messletters/SKILL.md`; select that skill by name when installing with the Vercel `skills` CLI:
+
 ```bash
-hermes skills install gwyntel/messletters/messletters
+npx skills add gwyntel/messletters-skill --skill messletters --agent hermes-agent -g -y
 ```
 
-## Quick Start
+The install is global for the selected agent. The CLI discovers the nested skill directory; do not move `SKILL.md` to the repository root.
+
+## Use
+
+Once installed, ask your agent to convert text using a named style (for example, “convert Hello to Math Sans-serif Bold”) or import the bundled Python module as shown below. Python usage requires the skill's `scripts` directory on `sys.path`; locate it through your host agent's skill metadata/configuration (for a global Hermes install, this is typically `~/.hermes/skills/messletters/scripts`; other agents' locations vary). No Hermes-specific tool is required; without Python/shell execution, an agent can still use the mapping instructions and provide the result directly.
+
+## Update
+
+Update a skill installed from the GitHub repository with:
+
+```bash
+npx skills update messletters
+```
+
+If the CLI reports that no matching installation is tracked, run the install command above again to install/update the selected skill from its canonical source. Local-path installs may not be tracked for source-based updates.
+
+For CLI options, see [Vercel skills](https://github.com/vercel-labs/skills).
+
+---
+
+**Hermes-native installer (alternative):** `hermes skills install gwyntel/messletters/messletters`. This is separate from the Vercel CLI and may use a different install location.
+
+---
+
+## Quick Start: Python
 
 ```python
 from messletters import convert, search_styles
@@ -30,6 +58,7 @@ convert("Love you 3000", "Math Fraktur Bold")
 search_styles("fraktur")
 # → ['Math Fraktur Bold', 'Math Fraktur Bold - Edit', 'Math Fraktur Normal', 'Math Fraktur Normal - Edit']
 ```
+
 
 ## API
 

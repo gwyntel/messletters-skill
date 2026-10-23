@@ -16,20 +16,25 @@ Converts ASCII text into 121 Unicode "fancy text" styles using pre-extracted cha
 
 Zero dependencies. Single Python file. Works anywhere.
 
-**Install:** `hermes skills install gwyntel/messletters/messletters`
-
 ## Module
 
-Bundled at `scripts/messletters.py` within this skill.
+Bundled at `scripts/messletters.py` within this skill. The example below runs with the default global Hermes Agent installation. If installed elsewhere or on another host, replace that path with the actual skill directory reported by your agent's skill metadata/configuration; keep `scripts` as the final component. No host path is assumed outside the explicitly labeled Hermes example.
 
 ## Import
 
 ```python
-import sys, os
-skill_scripts = os.path.expanduser('~/.hermes/skills/messletters/scripts')
-sys.path.insert(0, skill_scripts)
+from pathlib import Path
+import sys
+
+# Hermes Agent global install default; change this for your host/install scope.
+skill_dir = Path.home() / ".hermes" / "skills" / "messletters"
+sys.path.insert(0, str(skill_dir / "scripts"))
 from messletters import convert, search_styles, list_styles, preview_styles, reverse_lookup, CATEGORIES, STYLES
+
+print(convert("Hello World", "Math Sans-serif Bold"))
 ```
+
+Agent tools differ. Use the host's Python/shell execution capability, or provide the style mapping/result directly when code execution is unavailable. This skill needs no Hermes-specific tool.
 
 ## API
 
