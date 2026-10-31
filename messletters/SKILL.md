@@ -1,7 +1,7 @@
 ---
 name: messletters
-description: Convert text into 121+ Unicode fancy text styles — math alphabets, scripts, symbols, decorative, encircled, runic, and more. Extracted from messletters.com.
-version: 1.0.0
+description: Convert text into 121+ Unicode fancy text styles — math alphabets, scripts, symbols, decorative, encircled, runic, and more. Extracted from messletters.com. Includes wonkify (chaotic font mixing), a gradient text colorizer for Tumblr, and copy-safe delivery of fancy strings in chat.
+version: 1.1.0
 author: gwyntel
 license: MutuaL-1.2
 metadata:
@@ -129,6 +129,91 @@ print(result)  # Ｈｅｌｌｏ Ｗｏｒｌｄ
 
 ### User asks "what styles are available?"
 Show categories and sample outputs. Group by category — don't list all 121 raw.
+
+### Identifying an unknown fancy string
+Run `reverse_lookup` on one character of the string to get candidate styles, then `convert` the plain word in each candidate and compare. Common confusions:
+
+- **Math Serif Bold Italic** (`𝒔𝒆𝒆𝒅𝒃𝒐𝒙`) is a *serif* italic — elegant, reads as script to most eyes.
+- **Math Script (Royal) Bold** (`𝓼𝓮𝓮𝓭𝓫𝓸𝔁`) is the true flowing script.
+- **Math Monospace** (`𝚜𝚎𝚎𝚍𝚋𝚘𝚡`) is the typewriter slab.
+
+Check the codepoint before guessing: 1D434–1D467 italic, 1D468–1D49B bold italic, 1D4D0–1D503 bold script, 1D670–1D6A3 monospace.
+
+## Wonkify — Chaotic Font Mixing
+
+Turn plain text into a glitchy font-stew by cycling through multiple messletters styles character-by-character, interspersing decorative Unicode markers, combining characters, and small caps. This is NOT uniform font conversion — it's deliberate aesthetic chaos.
+
+**Core technique:** Cycle fonts per character (never repeat same style on adjacent chars), sprinkle Dwarf as "noise", add combining character accents (͟ strikethrough, ̲ underline), mix in small caps, wrap with decorative markers.
+
+**Font roster for wonkification:** Math Script (Royal) Bold, Math Sans-serif Bold, Math Fraktur Bold, Math Serif Bold, Math Serif Italic, Math Sans-serif Italic, Math Serif Bold Italic, Math Fraktur Normal, Math Sans-serif Bold Italic, Math Monospace, Dwarf, Dwarf II.
+
+**Examples:**
+- `rockstar queen` → `✮ ◜ 𝓡ᵒ𝕮𝑘s𝐭ₐʳ ‎ ‎𝓠uᴱ𝔢𝒏`
+- `guitar` → `𝓖uⁱt𝓪𝓻is𝑡`
+
+Full reference: `references/wonkify-guide.md`
+
+## EmojiCombos — Decorative Symbol Combinations
+
+Curated encyclopedia of symbol combinations for decorating text, wonkifying names, and building Tumblr/RP display aesthetics. Combines prefix decorations, suffix endmarks, borders/wrappers, flourish separators, star/sparkle accents, cute kaomoji, glitch/void effects, and nature elements.
+
+**House style: symbols over emoji.** When choosing decorative elements, reach for pure Unicode symbols († ♱ ⋆ ཐི ཋྀ ⛧ ࿔ ♡ ✧ ✮ ◜) rather than emoji characters. The target is gothic / alt / fairy-grunge — text that looks handmade and feral, not sticker-decorated. Emojis are acceptable sparingly, never as the dominant decoration.
+
+**Integration pattern:** Use emojicombos for borders/flourishes/markers, messletters for font mixing within the text. Pipeline: messletters → emojicombos wrapping → text-colorizer for gradient.
+
+`references/emojicombos.md` covers using [emojicombos.com](https://emojicombos.com/) as a live discovery tool — navigate to `emojicombos.com/<search-term>` and skim with your browser tool. Prefer symbol-forward searches (`divider-symbols`, `separator`, `alt-symbols`) over emoji-heavy ones. Keep your own static combos file as you collect favourites; the live site is the source, a local file is the shortcut.
+
+## Text Colorizer — Gradient HTML for Tumblr
+
+Generates Tumblr-compatible HTML with smooth color gradients across text. Each `<span>` gets an interpolated color. Supports 2-color, 3-color, rainbow, solid, and random modes.
+
+**⚠ Tumblr post editor HTML quirks:** When editing HTML for Tumblr's **post editor** (not theme HTML), inline `style` on `<a>` tags gets STRIPPED on save — links revert to tumblr blue. The fix is wrapping `<a>` inside `<span style="color:...">`. Also: never restructure user-provided HTML without being asked. Full reference: `references/tumblr-html-quirks.md`
+
+```bash
+python3 scripts/colorize.py "YOUR TEXT" --start "#FF0000" --end "#0000FF"
+python3 scripts/colorize.py "Hello world" --rainbow
+```
+
+Additional options: `--font`, `--size`, `--bold`, `--italic`, `--word` (word-by-word gradient).
+
+Also supports recoloring existing gradient HTML and gradient labels for bios. See `references/colorizer-guide.md` for the full recoloring algorithm and card patterns.
+
+## Combining Pipeline
+
+The full wonkification pipeline chains all modes:
+1. **messletters** — convert text to fancy Unicode fonts FIRST
+2. **wonkify** — cycle multiple fonts per character for chaotic mixing
+3. **text-colorizer** — apply gradient HTML colors to the result
+4. **emojicombos** — add decorative prefixes/suffixes/borders around the final text
+
+## Delivery in Chat
+
+### Copiable Unicode strings → fenced code block
+
+Any fancy-Unicode string the user is meant to **copy** (channel name, display name, bio line, tag) ships inside a plain triple-backtick fence, even when the string is a single word. Discord mobile gives the block a copy button and takes the whole string exactly; hand-selecting bare fancy text loses glyphs and picks up stray whitespace. Keep the fence to the string alone — font name, reasoning and alternatives go in the prose around it, never inside.
+
+### HTML → pbcopy
+
+When generating HTML (gradient text, bio cards, character templates), **pipe to `pbcopy` by default** — never dump raw HTML inline in chat. Discord cannot render HTML and copying from chat output is nearly impossible. Fall back to saving a file and telling the user the path.
+
+```bash
+python3 -c "..." | pbcopy
+```
+
+The only exception is when the user explicitly asks to see the HTML source in chat.
+
+## Chat Platform Channel Names
+
+On servers where the font is used to encode which section a channel belongs to, read the neighbourhood before converting anything.
+
+1. **Read the live channel list first — never style blind.** Ask the platform API for the guild's channels (e.g. `GET /guilds/<guild_id>/channels` with a bot token). A local channel cache maintained by the agent is not that list: it only holds channels the agent has exchanged traffic in and omits media/forum channels entirely, so it will show a section's threads but not the channel they hang off.
+2. **Match the font family already in that section.** Typical mapping:
+   - persona / character channels → **Math Script (Royal) Bold**, flowing script
+   - themed / scenario channels → **Math Monospace**, lowercase and hyphenated
+   - notification channels → **bold caps + decoration**, e.g. `𝐍𝐎𝐓𝐈𝐅𝐒⏖notifs﹐`
+   "Monospace like my other channels" means Math Monospace in the local lowercase-and-hyphen shape — not the persona script font, even when the persona channel is the one named after the agent.
+3. **Shape:** lowercase, no spaces; multi-word names join with a hyphen to mirror how the platform renders ASCII channel names.
+4. **Deliver** the raw string in a fenced code block and offer to create the channel. Creating or renaming server structure is the user's call — hand over the string, don't restructure the server unasked.
 
 ## Notes
 
